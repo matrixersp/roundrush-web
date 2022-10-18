@@ -39,7 +39,6 @@ export const Login = () => {
   return (
     <PublicLayout title="Login">
       <Formik
-        enableReinitialize={true}
         initialValues={{
           email: '',
           password: '',
@@ -60,8 +59,9 @@ export const Login = () => {
                 </CustomAlert>
               )}
               <Field
+                autoFocus
                 name="email"
-                placeholder="Inserisci la tua email"
+                placeholder="Insert your email"
                 type="text"
                 component={CustomTextField}
                 fullWidth

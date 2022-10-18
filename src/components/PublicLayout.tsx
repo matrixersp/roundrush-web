@@ -11,10 +11,10 @@ const WrapperStyled = styled('div')(({ theme }) => ({
     marginBottom: 26,
   },
   '& > .MuiPaper-root': {
-    padding: 50,
+    padding: '50px 90px',
     boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
     width: 539,
-    [theme.breakpoints.down('sm')]: { width: '100%', padding: 30 },
+    [theme.breakpoints.down('sm')]: { width: '100%', padding: 35 },
   },
 }));
 

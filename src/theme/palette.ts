@@ -10,7 +10,8 @@ export const palette = {
   },
   text: {
     primary: '#31394E',
-    secondary: '#ADB0B8',
+    secondary: '#5A6171',
+    secondaryLight: '#ADB0B8',
   },
   error: {
     main: '#FD5461',

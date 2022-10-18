@@ -1,4 +1,15 @@
-import { Stack, TextField } from '@mui/material';
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  MenuItem,
+  Select,
+  SelectProps,
+  Stack,
+  styled,
+  TextField,
+} from '@mui/material';
 import { FieldProps } from 'formik';
 import error from 'icons/error.svg';
 
@@ -22,3 +33,59 @@ export const CustomTextField = ({
     }
   />
 );
+
+export const CustomSelect = ({
+  field,
+  selectProps,
+  ...props
+}: FieldProps<string, any> & {
+  selectProps: SelectProps;
+  placeholder: string;
+  options: any[];
+}) => {
+  return (
+    <FormControl {...props}>
+      <Select {...field} {...selectProps} displayEmpty>
+        <MenuItem disabled value="">
+          <PlaceholderStyled>{props.placeholder}</PlaceholderStyled>
+        </MenuItem>
+        {props.options.map(
+          ({ value, label }: { value: string; label: string }) => (
+            <MenuItem key={value} value={value}>
+              {label}
+            </MenuItem>
+          )
+        )}
+      </Select>
+    </FormControl>
+  );
+};
+
+const PlaceholderStyled = styled('span')(({ theme }) => ({
+  // @ts-expect-error
+  color: theme.palette.text.secondaryLight,
+}));
+
+export const CustomCheckbox = ({
+  field,
+  form: { touched, errors },
+  ...props
+}: FieldProps & { label: string }) => {
+  return (
+    <div>
+      <FormControlLabel
+        {...props}
+        control={<Checkbox {...field} />}
+        sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+      />
+      <FormHelperText sx={{ color: 'error.main' }}>
+        {touched[field.name] && errors[field.name] && (
+          <Stack component="span" direction="row" spacing={1}>
+            <img src={error} alt="error-icon" />
+            <span>{String(errors[field.name])}</span>
+          </Stack>
+        )}
+      </FormHelperText>
+    </div>
+  );
+};

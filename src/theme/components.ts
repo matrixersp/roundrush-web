@@ -11,6 +11,9 @@ export const components = {
             padding: '10px 8px',
           },
         },
+        '& .MuiFormHelperText-root': {
+          marginLeft: 8,
+        },
       },
     },
   },
@@ -30,6 +33,29 @@ export const components = {
           textDecoration: 'underline',
         },
       },
+    },
+  },
+  MuiFormControl: {
+    styleOverrides: {
+      root: {
+        '& .MuiOutlinedInput-root': {
+          height: '40px',
+          '& fieldset': {
+            border: '2px solid #D9DBDE',
+          },
+          '& .MuiSelect-select': {
+            padding: '10px 8px',
+          },
+        },
+        '& .MuiFormHelperText-root': {
+          marginLeft: 8,
+        },
+      },
+    },
+  },
+  MuiCheckbox: {
+    defaultProps: {
+      disableRipple: true,
     },
   },
 };

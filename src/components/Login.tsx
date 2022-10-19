@@ -2,7 +2,7 @@ import { Stack, Link as MuiLink, styled, Button } from '@mui/material';
 import { CustomTextField } from 'components/fields';
 import { PublicLayout } from 'components/PublicLayout';
 import { Formik, Form, Field } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { CustomAlert } from 'components/CustomAlert';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ const loginSchema = Yup.object().shape({
 
 export const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState('');
 
   const handleSubmit = async (values: any) => {
@@ -39,6 +40,7 @@ export const Login = () => {
   return (
     <PublicLayout title="Login">
       <Formik
+        validateOnBlur={false}
         initialValues={{
           email: '',
           password: '',
@@ -52,10 +54,15 @@ export const Login = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <Stack spacing={3}>
+            <Stack spacing={3} marginTop={6.375}>
               {error && (
                 <CustomAlert severity="warning">
                   Please make sure you have the correct email and password
+                </CustomAlert>
+              )}
+              {location.state?.reset && (
+                <CustomAlert severity="success">
+                  Well done. The password was reset successfully
                 </CustomAlert>
               )}
               <Field

@@ -2,11 +2,14 @@ import { Stack, Link as MuiLink, styled, Button } from '@mui/material';
 import { CustomTextField } from 'components/fields';
 import { PublicLayout } from 'components/PublicLayout';
 import { Formik, Form, Field } from 'formik';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { CustomAlert } from 'components/CustomAlert';
 import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { login } from 'features/auth/authSlice';
+import { RootState } from 'app/store';
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().label('Email').required('${path} is required'),
@@ -16,26 +19,31 @@ const loginSchema = Yup.object().shape({
 export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(
+    (state: RootState) => state.auth.isLoggedIn
+  );
   const [error, setError] = useState('');
 
   const handleSubmit = async (values: any) => {
-    try {
-      await axios.post('https://api.m3o.com/v1/user/Login', values, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_M3O_API_TOKEN}`,
-        },
+    dispatch(login(values))
+      .unwrap()
+      .then(() => {
+        setError('');
+        navigate(location.state?.from || '/dashboard');
+      })
+      .catch((err: AxiosError) => {
+        if (axios.isAxiosError(err) && err.response) {
+          setError(err.response.data.error || 'Something went wrong');
+        } else {
+          setError((err as AxiosError).message);
+        }
       });
-
-      setError('');
-      navigate('/dashboard');
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.error || 'Something went wrong');
-      } else {
-        setError((err as AxiosError).message);
-      }
-    }
   };
+
+  if (isLoggedIn) {
+    return <Navigate to={location.state?.from || '/dashboard'} />;
+  }
 
   return (
     <PublicLayout title="Login">

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, useRoutes } from 'react-router-dom';
 import { Login } from 'components/Login';
 import { PrivateRoute } from 'components/PrivateRoute';
 import { Signup } from 'components/Signup';
@@ -14,7 +14,7 @@ const RoutesElement = () => {
       path: '/',
       element: <PrivateRoute />,
       children: [
-        { path: '', element: <Dashboard /> },
+        { path: '', element: <Navigate to="/dashboard" /> },
         { path: 'dashboard', element: <Dashboard /> },
         {
           path: '/settings',
@@ -29,6 +29,7 @@ const RoutesElement = () => {
     { path: '/login', element: <Login /> },
     { path: '/signup', element: <Signup /> },
     { path: '/forgot-password', element: <ForgotPassword /> },
+    { path: '/*', element: <div>Not Found</div> },
   ]);
   return element;
 };

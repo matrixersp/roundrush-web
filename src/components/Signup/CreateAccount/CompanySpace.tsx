@@ -5,8 +5,6 @@ import {
   CustomTextField,
 } from 'components/fields';
 import { Field, FormikProps } from 'formik';
-import { useState } from 'react';
-import error from 'icons/error.svg';
 
 type Props = {
   formikProps: FormikProps<any>;
@@ -15,15 +13,14 @@ type Props = {
 const existingSpaces = ['Space 1', 'Space 2', 'Space 3'];
 
 export const CompanySpace = ({ formikProps }: Props) => {
-  const [spaceExists, setSpaceExists] = useState(false);
-
   const handleSpaceChange = (event: any) => {
     const value = event.target.value;
     formikProps.setFieldValue('space', value);
-
-    debounce(() => {
-      setSpaceExists(existingSpaces.includes(value));
-    }, 500)();
+    if (existingSpaces.includes(value)) {
+      debounce(() => {
+        formikProps.setFieldError('space', 'This space name is not available');
+      }, 500)();
+    }
   };
 
   return (
@@ -48,14 +45,7 @@ export const CompanySpace = ({ formikProps }: Props) => {
           onChange={handleSpaceChange}
           component={CustomTextField}
           fullWidth
-          onBlur={() => console.log('onBlur')}
         />
-        {spaceExists && (
-          <CustomErrorStyled direction="row" spacing={1}>
-            <img src={error} alt="error-icon" />
-            <span>This space name is not available</span>
-          </CustomErrorStyled>
-        )}
       </FormFieldStyled>
       <FormFieldStyled>
         <Typography>Industry</Typography>

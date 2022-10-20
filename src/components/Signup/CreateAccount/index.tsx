@@ -59,6 +59,7 @@ export const CreateAccount = ({ setAccountReady, email }: Props) => {
     <>
       <DescriptionStyled>Fill up your account information</DescriptionStyled>
       <Formik
+        validateOnBlur={false}
         initialValues={{ ...initialValues, email }}
         validationSchema={validationSchema[step]}
         onSubmit={(values, actions) => {

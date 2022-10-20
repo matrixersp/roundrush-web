@@ -49,7 +49,7 @@ const TitleStyled = styled(Typography)(({ theme }) => ({
   lineHeight: '20px',
   color: '#000000',
   textAlign: 'center',
-  marginBottom: 34,
+  marginBottom: 16,
 }));
 
 type Props = { description?: string; title: string; children: React.ReactNode };

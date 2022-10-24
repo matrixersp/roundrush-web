@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
 import { BASE_API_URL } from 'utils/constants';
 
 export interface LoginData {
@@ -8,32 +7,28 @@ export interface LoginData {
   password: string;
 }
 
+interface AuthError {
+  error: string;
+}
 export interface Auth {
-  session: {
-    created: string;
-    expires: string;
-    id: string;
-    userId: string;
-  } | null;
+  _id: string;
+  fullName: string;
+  email: string;
 }
 
 export const login = createAsyncThunk<Auth, LoginData>(
   'auth/login',
-  async (data, thunkApi) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${BASE_API_URL}/user/Login`, data, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_M3O_API_TOKEN}`,
-        },
-      });
+      const response = await axios.post(`${BASE_API_URL}/auth`, data);
 
-      localStorage.setItem('SESSION', JSON.stringify(response.data['session']));
+      localStorage.setItem('TOKEN', response.headers['x-auth-token'] as string);
       return response.data as Auth;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        return thunkApi.rejectWithValue(err.response.data.error);
+        return rejectWithValue(err.response.data.error as AuthError);
       }
-      throw err;
+      return rejectWithValue((err as Error).message);
     }
   }
 );
@@ -42,9 +37,20 @@ export const logout = createAsyncThunk('auth/logout', () => {
   localStorage.clear();
 });
 
-const initialState: Auth & { isLoggedIn: boolean } = {
-  session: null,
-  isLoggedIn: false,
+function isLoggedIn() {
+  return localStorage.getItem('TOKEN') ? true : false;
+}
+
+type InitialState = {
+  loading: boolean;
+  loggedIn: boolean;
+  error?: string;
+};
+
+const initialState: InitialState = {
+  error: '',
+  loading: false,
+  loggedIn: isLoggedIn(),
 };
 
 export const authSlice = createSlice({
@@ -52,13 +58,22 @@ export const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.isLoggedIn = true;
-      state.session = action.payload.session;
-    });
+    builder
+      .addCase(login.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loggedIn = true;
+        state.error = '';
+      })
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message as string;
+      });
+
     builder.addCase(logout.fulfilled, (state, action) => {
-      state.isLoggedIn = false;
-      state.session = null;
+      state.loggedIn = false;
     });
   },
 });

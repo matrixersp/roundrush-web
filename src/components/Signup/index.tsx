@@ -1,4 +1,4 @@
-import { PublicLayout } from 'components/PublicLayout';
+import { PublicLayout } from 'components/ui/PublicLayout';
 import { CreateAccount } from 'components/Signup/CreateAccount';
 import { ValidateEmail } from 'components/Signup/ValidateEmail';
 import { AccountReady } from 'components/Signup/AccountReady';

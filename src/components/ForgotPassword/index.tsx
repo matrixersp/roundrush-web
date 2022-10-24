@@ -1,4 +1,4 @@
-import { PublicLayout } from 'components/PublicLayout';
+import { PublicLayout } from 'components/ui/PublicLayout';
 import { ValidateEmail } from 'components/ForgotPassword/ValidateEmail';
 import { useLocation } from 'react-router-dom';
 import { ResetPassword } from 'components/ForgotPassword/ResetPassword';

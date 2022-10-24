@@ -65,7 +65,9 @@ export const PublicLayout = ({
       <img src={brand} alt="Brand" />
       <ShortDescriptionStyled>{description}</ShortDescriptionStyled>
       <Paper elevation={0}>
-        <TitleStyled variant="h1">{title}</TitleStyled>
+        <TitleStyled variant="h1" data-testid={title}>
+          {title}
+        </TitleStyled>
         {children}
       </Paper>
     </WrapperStyled>

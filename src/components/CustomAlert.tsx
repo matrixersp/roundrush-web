@@ -29,6 +29,7 @@ export const CustomAlert = ({ severity, children }: Props) => {
           <img src={icon[severity]} alt="warning-icon" width="24" height="24" />
         ),
       }}
+      role="alert"
     >
       {children}
     </Alert>

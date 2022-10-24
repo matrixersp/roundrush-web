@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 import { Login } from 'features/auth/Login';
 import { PrivateRoute } from 'components/PrivateRoute';
 import { Signup } from 'components/Signup';
@@ -8,7 +8,7 @@ import { Dashboard } from 'components/Dashboard';
 import { Info } from 'components/SpaceSettings/Info';
 import { Members } from 'components/SpaceSettings/Members';
 
-const RoutesElement = () => {
+export const Routes = () => {
   const element = useRoutes([
     {
       path: '/',
@@ -32,14 +32,4 @@ const RoutesElement = () => {
     { path: '/*', element: <div>Not Found</div> },
   ]);
   return element;
-};
-
-type Props = {};
-
-export const Routes = (props: Props) => {
-  return (
-    <Router>
-      <RoutesElement />
-    </Router>
-  );
 };

@@ -5,7 +5,6 @@ import {
   Typography,
   Link as MuiLink,
 } from '@mui/material';
-import axios from 'axios';
 import { CustomTextField } from 'components/fields';
 import { Field, Formik, Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
@@ -13,6 +12,8 @@ import { Link } from 'react-router-dom';
 import { CustomAlert } from 'components/CustomAlert';
 import { Box } from '@mui/system';
 import { useState } from 'react';
+import { requestPasswordReset } from 'features/auth/authSlice';
+import { useAppDispatch } from 'app/hooks';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().label('Email').required('${path} is required'),
@@ -21,22 +22,22 @@ const validationSchema = Yup.object().shape({
 export const ValidateEmail = () => {
   const [emailExists, setEmailExists] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
-    try {
-      await axios.post('https://api.m3o.com/v1/user/Read', values, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_M3O_API_TOKEN}`,
-        },
+  const handleSubmit = async ({ email }: any, actions: FormikHelpers<any>) => {
+    dispatch(requestPasswordReset(email))
+      .unwrap()
+      .then(() => {
+        setEmailExists(true);
+      })
+      .catch(() => {
+        setEmailExists(false);
+      })
+      .finally(() => {
+        setFormSubmitted(true);
+        actions.setSubmitting(false);
+        actions.resetForm();
       });
-      setEmailExists(true);
-    } catch (err) {
-      setEmailExists(false);
-    } finally {
-      setFormSubmitted(true);
-      actions.setSubmitting(false);
-      actions.resetForm();
-    }
   };
 
   return (
@@ -46,13 +47,11 @@ export const ValidateEmail = () => {
         validateOnBlur={false}
         initialValues={{ email: '' }}
         validationSchema={validationSchema}
-        onSubmit={(values, actions) => {
-          handleSubmit(values, actions);
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => {
           return (
-            <Form>
+            <Form aria-label="form">
               <AlertContainerStyled>
                 {emailExists && (
                   <CustomAlert severity="success">

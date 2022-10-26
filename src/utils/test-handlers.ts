@@ -8,6 +8,15 @@ export const handlers = [
   rest.get(`${BASE_API_URL}/auth/verify-email`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({}));
   }),
+  rest.post(`${BASE_API_URL}/auth/recover`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
+  rest.get(`${BASE_API_URL}/auth/reset-password/:token`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
+  rest.post(`${BASE_API_URL}/auth/reset-password/:token`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
   rest.get(`${BASE_API_URL}/industries`, (req, res, ctx) => {
     return res(
       ctx.status(200),

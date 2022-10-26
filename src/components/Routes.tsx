@@ -2,7 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import { Login } from 'features/auth/Login';
 import { PrivateRoute } from 'components/PrivateRoute';
 import { Signup } from 'features/auth/Signup';
-import { ForgotPassword } from 'components/ForgotPassword';
+import { ForgotPassword } from 'features/auth/ForgotPassword';
 import { SpaceSettings } from 'components/SpaceSettings';
 import { Dashboard } from 'components/Dashboard';
 import { Info } from 'components/SpaceSettings/Info';

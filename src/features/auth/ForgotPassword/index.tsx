@@ -1,7 +1,7 @@
 import { PublicLayout } from 'components/ui/PublicLayout';
-import { ValidateEmail } from 'components/ForgotPassword/ValidateEmail';
+import { ValidateEmail } from 'features/auth/ForgotPassword/ValidateEmail';
 import { useLocation } from 'react-router-dom';
-import { ResetPassword } from 'components/ForgotPassword/ResetPassword';
+import { PasswordReset } from 'features/auth/ForgotPassword/PasswordReset';
 
 export const ForgotPassword = () => {
   const location = useLocation();
@@ -12,7 +12,7 @@ export const ForgotPassword = () => {
       description="Signing up a new account"
       title="Forgot your password"
     >
-      {token ? <ResetPassword token={token} /> : <ValidateEmail />}
+      {token ? <PasswordReset token={token} /> : <ValidateEmail />}
     </PublicLayout>
   );
 };

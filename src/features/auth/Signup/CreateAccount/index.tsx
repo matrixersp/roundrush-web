@@ -1,18 +1,23 @@
 import { Stack, styled, Button, Typography } from '@mui/material';
 import { Formik, Form, FormikHelpers, FormikProps } from 'formik';
-import { Dispatch, SetStateAction, useState } from 'react';
-import axios from 'axios';
-import { validationSchema } from 'components/Signup/CreateAccount/validationSchema';
-import { initialValues } from 'components/Signup/CreateAccount/initialValues';
-import { AccountInformation } from 'components/Signup/CreateAccount/AccountInformation';
-import { CompanySpace } from 'components/Signup/CreateAccount/CompanySpace';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { validationSchema } from 'features/auth/Signup/CreateAccount/validationSchema';
+import { initialValues } from 'features/auth/Signup/CreateAccount/initialValues';
+import { UserInformation } from 'features/auth/Signup/CreateAccount/UserInformation';
+import { OrganizationInformation } from 'features/auth/Signup/CreateAccount/OrganizationInformation';
+import { useAppDispatch } from 'app/hooks';
+import { signup } from 'features/auth/authSlice';
+import {
+  getIndustries,
+  getEmployeesSize,
+} from 'features/organization/organizationSlice';
 
 function renderStepContent(step: number, formikProps: FormikProps<any>) {
   switch (step) {
     case 0:
-      return <AccountInformation />;
+      return <UserInformation />;
     case 1:
-      return <CompanySpace formikProps={formikProps} />;
+      return <OrganizationInformation formikProps={formikProps} />;
     default:
       return null;
   }
@@ -25,25 +30,25 @@ type Props = {
 
 export const CreateAccount = ({ setAccountReady, email }: Props) => {
   const [step, setStep] = useState(0);
+  const formInitialValues = { ...initialValues, email };
+  const currentValidationSchema = validationSchema[step];
   const isLastStep = step === 1;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getIndustries());
+    dispatch(getEmployeesSize());
+  }, []);
 
   const submitForm = async (values: any, actions: FormikHelpers<any>) => {
-    try {
-      await axios.post(
-        'https://api.m3o.com/v1/user/Create',
-        { ...values, username: getUsernameFromEmail(values.email) },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_M3O_API_TOKEN}`,
-          },
-        }
-      );
-
-      setAccountReady(true);
-      actions.setSubmitting(false);
-    } catch (err) {
-      actions.setSubmitting(false);
-    }
+    dispatch(signup(values))
+      .unwrap()
+      .then(() => {
+        setAccountReady(true);
+      })
+      .finally(() => {
+        actions.setSubmitting(false);
+      });
   };
 
   const handleSubmit = (values: any, actions: FormikHelpers<any>) => {
@@ -51,6 +56,7 @@ export const CreateAccount = ({ setAccountReady, email }: Props) => {
       submitForm(values, actions);
     } else {
       setStep(step + 1);
+      actions.setTouched({});
       actions.setSubmitting(false);
     }
   };
@@ -59,12 +65,10 @@ export const CreateAccount = ({ setAccountReady, email }: Props) => {
     <>
       <DescriptionStyled>Fill up your account information</DescriptionStyled>
       <Formik
-        validateOnBlur={false}
-        initialValues={{ ...initialValues, email }}
-        validationSchema={validationSchema[step]}
-        onSubmit={(values, actions) => {
-          handleSubmit(values, actions);
-        }}
+        enableReinitialize={false}
+        initialValues={formInitialValues}
+        validationSchema={currentValidationSchema}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting, ...props }) => (
           <Form>
@@ -80,7 +84,6 @@ export const CreateAccount = ({ setAccountReady, email }: Props) => {
                 {isLastStep ? 'Register' : 'Next'}
               </ButtonStyled>
             </Stack>
-            {/* {JSON.stringify(values, null, 2)} */}
           </Form>
         )}
       </Formik>
@@ -98,7 +101,3 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   paddingTop: theme.spacing(1.75),
   paddingBottom: theme.spacing(1.75),
 }));
-
-function getUsernameFromEmail(email: string) {
-  return email.split('@')[0];
-}

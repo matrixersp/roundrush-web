@@ -1,7 +1,7 @@
 import { PublicLayout } from 'components/ui/PublicLayout';
-import { CreateAccount } from 'components/Signup/CreateAccount';
-import { ValidateEmail } from 'components/Signup/ValidateEmail';
-import { AccountReady } from 'components/Signup/AccountReady';
+import { CreateAccount } from 'features/auth/Signup/CreateAccount';
+import { ValidateEmail } from 'features/auth/Signup/ValidateEmail';
+import { AccountReady } from 'features/auth/Signup/AccountReady';
 import { useState } from 'react';
 
 export const Signup = () => {

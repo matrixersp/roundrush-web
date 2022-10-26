@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { BASE_API_URL } from 'utils/constants';
 
-export interface LoginData {
+interface LoginData {
   email: string;
   password: string;
 }
@@ -10,10 +10,13 @@ export interface LoginData {
 interface AuthError {
   error: string;
 }
-export interface Auth {
-  _id: string;
-  fullName: string;
-  email: string;
+interface Auth {
+  user: {
+    _id: string;
+    fullName: string;
+    email: string;
+  };
+  token: string;
 }
 
 export const login = createAsyncThunk<Auth, LoginData>(
@@ -22,7 +25,41 @@ export const login = createAsyncThunk<Auth, LoginData>(
     try {
       const response = await axios.post(`${BASE_API_URL}/auth`, data);
 
-      localStorage.setItem('TOKEN', response.headers['x-auth-token'] as string);
+      localStorage.setItem('TOKEN', response.data.token);
+      return response.data as Auth;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data.error as AuthError);
+      }
+      return rejectWithValue((err as Error).message);
+    }
+  }
+);
+
+export const verifyEmail = createAsyncThunk<Auth, string>(
+  'auth/verifyEmail',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_API_URL}/auth/verify-email`, {
+        params: { email },
+      });
+
+      return response.data as Auth;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data.error as AuthError);
+      }
+      return rejectWithValue((err as Error).message);
+    }
+  }
+);
+
+export const signup = createAsyncThunk<Auth, string>(
+  'auth/signup',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${BASE_API_URL}/users`, data);
+
       return response.data as Auth;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
@@ -68,6 +105,32 @@ export const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message as string;
+      });
+
+    builder
+      .addCase(verifyEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+      })
+      .addCase(verifyEmail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
+        state.loading = false;
+        // state.error = action.error.message as string;
+      });
+
+    builder
+      .addCase(signup.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+      })
+      .addCase(signup.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signup.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message as string;
       });

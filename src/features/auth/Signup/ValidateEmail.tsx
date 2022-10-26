@@ -1,13 +1,14 @@
 import { Stack, styled, Button, Typography } from '@mui/material';
 import { CustomTextField } from 'components/fields';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { verifyEmail } from 'features/auth/authSlice';
+import { useAppDispatch } from 'app/hooks';
 
 const signupSchema = Yup.object().shape({
-  email: Yup.string().label('Email').required('${path} is required'),
+  email: Yup.string().email().label('Email').required('${path} is required'),
 });
 
 type Props = {
@@ -16,19 +17,21 @@ type Props = {
 
 export const ValidateEmail = ({ onContinue }: Props) => {
   const [step, setStep] = useState(0);
+  const dispatch = useAppDispatch();
 
-  const handleSubmit = async (values: any) => {
-    try {
-      await axios.post('https://api.m3o.com/v1/user/Read', values, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_M3O_API_TOKEN}`,
-        },
+  const handleSubmit = async ({ email }: any, actions: FormikHelpers<any>) => {
+    dispatch(verifyEmail(email))
+      .unwrap()
+      .then(() => {
+        onContinue(email);
+      })
+      .catch(() => {
+        setStep(1);
+      })
+      .finally(() => {
+        actions.setSubmitting(false);
+        actions.resetForm();
       });
-
-      setStep(1);
-    } catch (err) {
-      onContinue(values.email);
-    }
   };
 
   return step === 0 ? (
@@ -37,11 +40,7 @@ export const ValidateEmail = ({ onContinue }: Props) => {
       <Formik
         initialValues={{ email: '' }}
         validationSchema={signupSchema}
-        onSubmit={async (values, actions) => {
-          await handleSubmit(values);
-          actions.setSubmitting(false);
-          actions.resetForm();
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>

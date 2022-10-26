@@ -45,15 +45,12 @@ export const Login = () => {
   return (
     <PublicLayout title="Login">
       <Formik
-        // validateOnBlur={false}
         initialValues={{
           email: '',
           password: '',
         }}
         validationSchema={loginSchema}
-        onSubmit={(values, actions) => {
-          handleSubmit(values, actions);
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form aria-label="form">

@@ -28,7 +28,7 @@ export const validationSchema = [
         ({ label, max }) => `${label} must be less than ${max + 1} characters`
       )
       .required('${path} is required'),
-    space: Yup.string()
+    spaceName: Yup.string()
       .label('Space')
       .min(2, ({ label, min }) => `${label} must be at least ${min} characters`)
       .max(
@@ -36,10 +36,8 @@ export const validationSchema = [
         ({ label, max }) => `${label} must be less than ${max + 1} characters`
       )
       .required('${path} is required'),
-    industry: Yup.string().label('Industry').required('${path} is required'),
-    numberOfEmployees: Yup.string()
-      .label('Number of employee')
-      .required('${path} is required'),
+    industry: Yup.string().label('Industry'),
+    employeesSize: Yup.string().label('Number of employee'),
     acceptTerms: Yup.boolean()
       .label('Terms of Use and Privacy Policy')
       .oneOf([true], 'You must accept the ${path}'),

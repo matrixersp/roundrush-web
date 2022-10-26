@@ -2,8 +2,8 @@ export const initialValues = {
   fullName: '',
   password: '',
   companyName: '',
-  space: '',
+  spaceName: '',
   industry: '',
-  numberOfEmployees: '',
+  employeesSize: '',
   acceptTerms: false,
 };

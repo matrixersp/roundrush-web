@@ -1,7 +1,7 @@
 import { CustomTextField } from 'components/fields';
 import { Field } from 'formik';
 
-export const AccountInformation = () => {
+export const UserInformation = () => {
   return (
     <>
       <Field

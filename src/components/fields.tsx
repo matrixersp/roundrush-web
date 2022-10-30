@@ -11,7 +11,7 @@ import {
   TextField,
 } from '@mui/material';
 import { FieldProps } from 'formik';
-import error from 'icons/error.svg';
+import { Error as ErrorIcon } from 'icons';
 
 export const CustomTextField = ({
   field,
@@ -25,8 +25,8 @@ export const CustomTextField = ({
     helperText={
       touched[field.name] &&
       errors[field.name] && (
-        <Stack component="span" direction="row" spacing={1}>
-          <img src={error} alt="error-icon" />
+        <Stack component="span" direction="row" alignItems="center" spacing={1}>
+          <ErrorIcon />
           <span>{String(errors[field.name])}</span>
         </Stack>
       )
@@ -80,8 +80,13 @@ export const CustomCheckbox = ({
       />
       <FormHelperText sx={{ color: 'error.main' }}>
         {touched[field.name] && errors[field.name] && (
-          <Stack component="span" direction="row" spacing={1}>
-            <img src={error} alt="error-icon" />
+          <Stack
+            component="span"
+            direction="row"
+            alignItems="center"
+            spacing={1}
+          >
+            <ErrorIcon />
             <span>{String(errors[field.name])}</span>
           </Stack>
         )}

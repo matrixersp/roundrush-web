@@ -101,7 +101,7 @@ describe('Login', () => {
       },
     });
 
-    expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Dashboard/i)).toBeInTheDocument();
     expect(screen.queryByTestId('Login')).not.toBeInTheDocument();
   });
 

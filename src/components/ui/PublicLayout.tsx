@@ -1,5 +1,5 @@
 import { Paper, styled, Typography } from '@mui/material';
-import brand from 'icons/brand.svg';
+import BrandIcon from 'icons/Brand';
 
 const WrapperStyled = styled('div')(({ theme }) => ({
   padding: '62px 12px',
@@ -7,7 +7,7 @@ const WrapperStyled = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  '& > img': {
+  '& > svg': {
     marginBottom: 26,
   },
   '& > .MuiPaper-root': {
@@ -62,7 +62,7 @@ export const PublicLayout = ({
   return (
     <WrapperStyled>
       <BackgroundStyled />
-      <img src={brand} alt="Brand" />
+      <BrandIcon />
       <ShortDescriptionStyled>{description}</ShortDescriptionStyled>
       <Paper elevation={0}>
         <TitleStyled variant="h1" data-testid={title}>

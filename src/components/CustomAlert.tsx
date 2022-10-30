@@ -1,17 +1,19 @@
 import { Alert } from '@mui/material';
-import warning from 'icons/warning.svg';
-import error from 'icons/error.svg';
-import success from 'icons/success.svg';
+import { Success, Warning, Error } from 'icons';
 
 type Props = {
   severity: 'error' | 'success' | 'warning';
   children: string;
 };
 
-const icon = {
-  error,
-  success,
-  warning,
+const getIcon = (severity: Props['severity']) => {
+  const icon = {
+    error: <Error />,
+    success: <Success />,
+    warning: <Warning />,
+  };
+
+  return icon[severity];
 };
 
 export const CustomAlert = ({ severity, children }: Props) => {
@@ -25,9 +27,7 @@ export const CustomAlert = ({ severity, children }: Props) => {
         color: `${color}.main`,
       }}
       iconMapping={{
-        success: (
-          <img src={icon[severity]} alt="warning-icon" width="24" height="24" />
-        ),
+        success: getIcon(severity),
       }}
       role="alert"
     >

@@ -1,11 +1,13 @@
 import { Stack, Typography, Link as MuiLink, styled } from '@mui/material';
-import mail from 'icons/mail.svg';
+import { Mail as MailIcon } from 'icons';
 import { Link } from 'react-router-dom';
 
 export const AccountReady = () => {
   return (
     <ContainerStyled spacing={4.5}>
-      <img src={mail} alt="mail icon" width="107" height="107" />
+      <IconWrapperStyled>
+        <MailIcon />
+      </IconWrapperStyled>
       <Typography>
         Please verify your email and continue to RoundRush
       </Typography>
@@ -15,6 +17,14 @@ export const AccountReady = () => {
     </ContainerStyled>
   );
 };
+
+const IconWrapperStyled = styled('div')(() => ({
+  marginTop: 66,
+  '& svg': {
+    width: 107,
+    height: 107,
+  },
+}));
 
 const ContainerStyled = styled(Stack)(({ theme }) => ({
   alignItems: 'center',

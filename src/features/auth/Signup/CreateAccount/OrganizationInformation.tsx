@@ -7,7 +7,7 @@ import {
 } from 'components/fields';
 import { spaceExists } from 'features/organization/organizationSlice';
 import { Field, FormikProps } from 'formik';
-import error from 'icons/error.svg';
+import { Error as ErrorIcon } from 'icons';
 import { useCallback, useState } from 'react';
 
 type Props = {
@@ -65,8 +65,13 @@ export const OrganizationInformation = ({ formikProps }: Props) => {
           error={hasError || !!(touched.spaceName && errors.spaceName)}
           helperText={
             (hasError || (touched.spaceName && errors.spaceName)) && (
-              <Stack component="span" direction="row" spacing={1}>
-                <img src={error} alt="error-icon" />
+              <Stack
+                component="span"
+                direction="row"
+                alignItems="center"
+                spacing={1}
+              >
+                <ErrorIcon />
                 <span>
                   {hasError
                     ? 'This space name is not available'

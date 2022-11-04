@@ -12,6 +12,7 @@ interface Industry {
 }
 
 type EmployeesSize = Industry;
+type Organization = Industry;
 
 export const getIndustries = createAsyncThunk<Industry[], void>(
   'organization/getIndustries',
@@ -45,11 +46,11 @@ export const getEmployeesSize = createAsyncThunk<EmployeesSize[], void>(
   }
 );
 
-export interface Space {
+export interface ResponseData {
   message: string;
 }
 
-export const spaceExists = createAsyncThunk<Space, string>(
+export const spaceExists = createAsyncThunk<ResponseData, string>(
   'organization/spaceExists',
   async (spaceName, { rejectWithValue }) => {
     try {
@@ -60,7 +61,23 @@ export const spaceExists = createAsyncThunk<Space, string>(
         }
       );
 
-      return response.data as Space;
+      return response.data as ResponseData;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data.error as GeneralError);
+      }
+      return rejectWithValue((err as Error).message);
+    }
+  }
+);
+
+export const getOrganizations = createAsyncThunk<Organization[]>(
+  'organization/getOrganizations',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('/data/organizations.json');
+
+      return response.data as Organization[];
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         return rejectWithValue(err.response.data.error as GeneralError);
@@ -76,6 +93,7 @@ type InitialState = {
   error?: string;
   industries: Record<string, any>[];
   employeesSize: Record<string, any>[];
+  organizations: Record<string, any>[];
 };
 
 const initialState: InitialState = {
@@ -84,6 +102,7 @@ const initialState: InitialState = {
   error: '',
   industries: [],
   employeesSize: [],
+  organizations: [],
 };
 
 export const organizationSlice = createSlice({
@@ -110,6 +129,10 @@ export const organizationSlice = createSlice({
 
     builder.addCase(getEmployeesSize.fulfilled, (state, action) => {
       state.employeesSize = action.payload;
+    });
+
+    builder.addCase(getOrganizations.fulfilled, (state, action) => {
+      state.organizations = action.payload;
     });
   },
 });

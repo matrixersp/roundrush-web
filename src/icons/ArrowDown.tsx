@@ -2,14 +2,14 @@ import { SVGProps } from 'react';
 
 const ArrowDown = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={16}
-    height={16}
+    width={20}
+    height={20}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M8 9.057 4.47 5.53a.667.667 0 1 0-.942.943l4 4c.26.26.682.26.942 0l4-4a.667.667 0 1 0-.943-.943L8 9.057Z"
+      d="m10 11.321-4.41-4.41a.833.833 0 1 0-1.18 1.178l5 5a.833.833 0 0 0 1.18 0l5-5a.833.833 0 1 0-1.18-1.178L10 11.32Z"
       fill="#fff"
     />
   </svg>

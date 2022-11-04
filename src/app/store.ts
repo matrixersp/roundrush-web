@@ -5,10 +5,12 @@ import {
 } from '@reduxjs/toolkit';
 import authReducer from 'features/auth/authSlice';
 import organizationReducer from 'features/organization/organizationSlice';
+import objectiveReducer from 'features/objectives/objectivesSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   organization: organizationReducer,
+  objective: objectiveReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

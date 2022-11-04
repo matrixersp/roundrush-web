@@ -1,0 +1,113 @@
+[
+  {
+    "id": "1",
+    "name": "Coraly",
+    "projects": [
+      {
+        "id": 1,
+        "name": "Coraly Tech & Dev",
+        "description": "Coraly Tech & Dev",
+        "url": "/tech-and-dev",
+        "tags": [
+          "coraly"
+        ],
+        "image": "/images/coraly.jpg",
+        "title": "Coraly"
+      },
+      {
+        "id": 2,
+        "name": "Design Board",
+        "description": "Design Board",
+        "url": "/design-board",
+        "tags": [
+          "coraly"
+        ],
+        "image": "/images/coraly.jpg",
+        "title": "Coraly"
+      },
+      {
+        "id": 3,
+        "name": "Growth Hacking",
+        "description": "Growth Hacking",
+        "url": "/growth-hacking",
+        "tags": [
+          "coraly"
+        ],
+        "image": "/images/coraly.jpg",
+        "title": "Coraly"
+      },
+      {
+        "id": 4,
+        "name": "Marketing",
+        "description": "Marketing",
+        "url": "/marketing",
+        "tags": [
+          "coraly"
+        ],
+        "image": "/images/coraly.jpg",
+        "title": "Coraly"
+      },
+      {
+        "id": 5,
+        "name": "Product Management",
+        "description": "Product Management",
+        "url": "/product-management",
+        "tags": [
+          "coraly"
+        ],
+        "image": "/images/coraly.jpg",
+        "title": "Coraly"
+      },
+      {
+        "id": 6,
+        "name": "Sales",
+        "description": "Sales",
+        "url": "/sales",
+        "tags": [
+          "coraly"
+        ],
+        "image": "/images/coraly.jpg",
+        "title": "Coraly"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Lasting Dynamics",
+    "projects": [
+      {
+        "id": 1,
+        "name": "Website",
+        "description": "Website",
+        "url": "/website",
+        "tags": [
+          "Lasting Dynamics"
+        ],
+        "image": "/images/ld.jpg",
+        "title": "Lasting Dynamics"
+      },
+      {
+        "id": 2,
+        "name": "Marketing",
+        "description": "Marketing",
+        "url": "/marketing",
+        "tags": [
+          "Lasting Dynamics"
+        ],
+        "image": "/images/ld.jpg",
+        "title": "Lasting Dynamics"
+      },
+      {
+        "id": 3,
+        "name": "Sales",
+        "description": "Sales",
+        "url": "/sales",
+        "tags": [
+          "Lasting Dynamics"
+        ],
+        "image": "/images/ld.jpg",
+        "title": "Lasting Dynamics"
+      }
+    ]
+  }
+]

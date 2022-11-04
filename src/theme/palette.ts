@@ -6,6 +6,7 @@ export const palette = {
   },
   secondary: {
     main: '#29C293',
+    light: '#BFEDDF',
     contrastText: '#fff',
   },
   text: {
@@ -16,4 +17,5 @@ export const palette = {
   error: {
     main: '#FD5461',
   },
+  divider: '#EAEBED',
 };

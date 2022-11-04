@@ -1,4 +1,21 @@
 export const components = {
+  MuiCssBaseline: {
+    styleOverrides: {
+      '*::-webkit-scrollbar': {
+        width: '0.45em',
+      },
+      '*::-webkit-scrollbar-track': {
+        backgroundColor: '#F5F5F7',
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: '#D6D6D6',
+        borderRadius: '0.5em',
+        '&:hover': {
+          backgroundColor: '#C1C1C1',
+        },
+      },
+    },
+  },
   MuiTextField: {
     styleOverrides: {
       root: {
@@ -20,8 +37,12 @@ export const components = {
   MuiButton: {
     styleOverrides: {
       root: {
-        textTransform: 'capitalize' as const,
+        textTransform: 'inherit' as const,
         borderRadius: 6,
+        '&.MuiButton-sizeLarge': {
+          fontSize: '0.875rem',
+          lineHeight: '20px',
+        },
       },
     },
   },
